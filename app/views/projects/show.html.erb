@@ -1,0 +1,21 @@
+
+
+<p id="notice"><%= notice %></p>
+<p>
+  <strong>Project name:</strong>
+  <%= @project.name %>
+</p>
+<%= link_to 'Edit', edit_project_path(@project) %> |
+<%= link_to 'Back', projects_path %>
+<h2>Trabajadores Asignados</h2>
+<% @project.people.each do |p|%>
+ <p><%= p.name %>
+ <%= link_to 'Eliminar', remove_person_from_project_path(p, @project), method: :delete %></p>
+<% end %>
+<h2>Asignar Trabajador</h2>
+<%= form_with model: Assignment.new, local: :true do |f| %>
+  <%= f.select :people_id, @project.available_people.pluck(:name, :id) %>
+  <%= f.hidden_field :project_id, value: @project.id %>
+  <%= f.submit 'Create!' %>
+
+<% end %>
